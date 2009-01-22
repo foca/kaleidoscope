@@ -20,7 +20,7 @@ module Kaleidoscope
   #   User.admin.create #=> #<User id: 1, admin: true, ...>
   #
   def self.factory(model, name=nil, &block)
-    name ||= :kaleidoscope
+    name ||= :factory
     raise ArgumentError, "#{model.name} already has a #{name} method" if model.respond_to?(name)
     definition = block.call
     definition = { :conditions => definition } if Hash === definition
