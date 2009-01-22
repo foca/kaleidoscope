@@ -19,6 +19,7 @@ module Kaleidoscope
   #
   def self.factory(model, name=nil, &block)
     name ||= :kaleidoscope
+    raise ArgumentError, "#{model.name} already has a #{name} method" if model.respond_to?(name)
     definition = block.call
     definition = { :conditions => definition } if Hash === definition
     model.named_scope name, definition
