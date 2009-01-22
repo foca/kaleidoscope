@@ -1,3 +1,4 @@
+require "rubygems"
 require "activerecord"
 
 module Kaleidoscope
@@ -18,12 +19,21 @@ module Kaleidoscope
   #   }}
   #
   #   User.admin.create #=> #<User id: 1, admin: true, ...>
-  #
   def self.factory(model, name=nil, &block)
     name ||= :factory
     raise ArgumentError, "#{model.name} already has a #{name} method" if model.respond_to?(name)
     definition = block.call
     definition = { :conditions => definition } if Hash === definition
     model.named_scope name, definition
+  end
+  
+  # Call this to define multiple factories together. Only for aesthetic reasons.
+  #
+  #   Kaleidoscope.define do
+  #     factory(User, :admin) {{ :admin => true }}
+  #     factory(User, :inactive) {{ :state => 'pending' }}
+  #   end
+  def self.define(&block)
+    module_eval(&block)
   end
 end
