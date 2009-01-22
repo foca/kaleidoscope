@@ -36,6 +36,7 @@ class TestKaleidoscope < Test::Unit::TestCase
   include TestHelpers
   
   def setup
+    Kaleidoscope.reset_uniques!
     User.create_table
   end
   
@@ -78,5 +79,24 @@ class TestKaleidoscope < Test::Unit::TestCase
     assert_equal "Uruguay", user.country
     assert_equal "Foo Bar", user.name
     assert_equal "foo@bar.com", user.email
+  end
+  
+  def test_it_generates_unique_values
+    assert_equal 0, Kaleidoscope.unique
+    assert_equal 1, Kaleidoscope.unique
+    assert_equal 2, Kaleidoscope.unique
+  end
+  
+  def test_passes_unique_values_to_block_if_given
+    assert_equal "user_0", Kaleidoscope.unique {|i| "user_#{i}" }
+  end
+  
+  def test_it_can_reset_the_unique_generator
+    assert_equal 0, Kaleidoscope.unique
+    assert_equal 1, Kaleidoscope.unique
+    
+    Kaleidoscope.reset_uniques!
+    
+    assert_equal 0, Kaleidoscope.unique
   end
 end

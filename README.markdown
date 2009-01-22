@@ -26,6 +26,24 @@ Example plz?
     # Don't save values automatically
     User.factory.new #=> #<User id: nil, ...>
 
+Generating unique values
+------------------------
+
+Most of the time, our models require certain fields to have unique content. In 
+order to generate that with Kaleidoscope, just call `Kaleidoscope.unique`:
+
+    Kaleidoscope.unique #=> 0
+    Kaleidoscope.unique #=> 1
+    # and so on, and so forth
+    
+If you need repeatable values, call `Kaleidoscope.reset_uniques!` and the next
+call to `Kaleidoscope.unique` will return 0 again.
+
+You can pass a block to `unique`, in which case we will pass the unique value
+to the block and return whatever the block outputs:
+
+    Kaleidoscope.unique {|i| "user_#{i}" } #=> "user_0"
+
 How does it work?
 -----------------
 
