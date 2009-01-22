@@ -1,3 +1,5 @@
+require "activerecord"
+
 module Kaleidoscope
   # Setup simple and clean factories for activerecord using named_scopes
   # (no touching of the internals!)
